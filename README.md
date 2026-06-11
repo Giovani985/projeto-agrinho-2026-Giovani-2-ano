@@ -1,19 +1,19 @@
-# projeto-agrinho-2026-Giovani-2-ano
-
 # Do Milho à Música 🌽🎶
 
-Projeto desenvolvido para o **Agrinho**, focado em sustentabilidade e tecnologia, mostrando como o milho pode se transformar em bioplástico e, posteriormente, em instrumentos musicais.
+Projeto interativo desenvolvido para o **Agrinho**, focado em sustentabilidade e tecnologia. O ecossistema mostra como o milho se transforma em bioplástico e vira música, trazendo também um minijogo educativo de conscientização sobre o cuidado com a lavoura.
+
+## 🎮 O Jogo: Defenda a Plantação
+
+No site, há um jogo interativo onde o usuário controla a máquina de manejo biológico. O objetivo é eliminar as lagartas (`🐛`) antes que elas ataquem e destruam a saúde do milharal.
 
 ## 🚀 Tecnologias Utilizadas
 
-* **HTML5:** Estruturação semântica da página.
-* **CSS3:** Estilização moderna utilizando variáveis globais.
-* **JavaScript:** Interatividade com o usuário.
+* **HTML5:** Estruturação da página e criação da arena do jogo.
+* **CSS3:** Visual moderno, responsivo e estilização dos elementos do jogo.
+* **JavaScript:** Lógica de surgimento aleatório dos alvos, temporizadores e sistema de pontuação/vida.
 
 ## 📄 Como rodar o projeto
 
 1. Faça o download ou clone este repositório.
 2. Abra o arquivo `index.html` em qualquer navegador web.
-
----
-Desenvolvido com ❤️ por Júlia.
+3. Clique em **Iniciar Jogo** e proteja seu milharal!

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleção de elementos da tela
     const btnIniciar = document.getElementById('btn-iniciar');
     const telaJogo = document.getElementById('tela-jogo');
     const placarTxt = document.getElementById('placar');
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let jogoAtivo = false;
     let intervaloCriacao;
 
-    // Inicia o jogo ao clicar no botão
     btnIniciar.addEventListener('click', () => {
         if (!jogoAtivo) {
             iniciarJogo();
@@ -21,14 +19,34 @@ document.addEventListener('DOMContentLoaded', () => {
         pontos = 0;
         vidaPlantacao = 100;
         jogoAtivo = true;
-        telaJogo.innerHTML = ''; // Limpa a tela
+        telaJogo.innerHTML = ''; // Limpa a tela antiga
         placarTxt.textContent = pontos;
         vidaTxt.textContent = vidaPlantacao + '%';
         vidaTxt.style.color = 'inherit';
         btnIniciar.textContent = 'Reiniciar Jogo';
 
+        // Desenha a plantação de milho no fundo
+        desenharPlantacao();
+
         // Cria um novo inseto a cada 1.2 segundos
         intervaloCriacao = setInterval(criarInseto, 1200);
+    }
+
+    function desenharPlantacao() {
+        const containerPlantas = document.createElement('div');
+        containerPlantas.classList.add('plantacao-fundo');
+
+        // Calcula quantos milhos cabem na tela dinamicamente
+        const totalPlantas = 42; 
+
+        for (let i = 0; i < totalPlantas; i++) {
+            const planta = document.createElement('div');
+            planta.classList.add('planta-milho');
+            planta.textContent = '🌽';
+            containerPlantas.appendChild(planta);
+        }
+
+        telaJogo.appendChild(containerPlantas);
     }
 
     function criarInseto() {
@@ -36,26 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const inseto = document.createElement('div');
         inseto.classList.add('inseto');
-        inseto.textContent = '🐛'; // Emoji do bixinho
+        inseto.textContent = '🐛'; // Inseto comedor de milho
 
-        // Define uma posição aleatória dentro da tela do jogo
-        const larguraMax = telaJogo.clientWidth - 40;
-        const alturaMax = telaJogo.clientHeight - 40;
+        const larguraMax = telaJogo.clientWidth - 45;
+        const alturaMax = telaJogo.clientHeight - 45;
         
         inseto.style.left = Math.floor(Math.random() * larguraMax) + 'px';
         inseto.style.top = Math.floor(Math.random() * alturaMax) + 'px';
 
-        // Se o jogador clicar no bixinho (eliminar/jogar produto)
         inseto.addEventListener('click', (e) => {
-            e.stopPropagation(); // Evita cliques duplicados
+            e.stopPropagation();
             pontos += 10;
             placarTxt.textContent = pontos;
-            inseto.remove(); // Remove o bixinho da tela
+            inseto.remove();
         });
 
         telaJogo.appendChild(inseto);
 
-        // Se o jogador não clicar em 2.5 segundos, o bixinho come o milho e some
+        // Tempo limite para clicar antes do milho sofrer dano
         setTimeout(() => {
             if (inseto.parentNode === telaJogo && jogoAtivo) {
                 inseto.remove();
@@ -65,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function danificarPlantacao() {
-        vidaPlantacao -= 20; // Perde 20% de vida
+        vidaPlantacao -= 20;
         if (vidaPlantacao <= 0) {
             vidaPlantacao = 0;
             fimDeJogo();
@@ -73,14 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
         vidaTxt.textContent = vidaPlantacao + '%';
         
         if (vidaPlantacao <= 40) {
-            vidaTxt.style.color = '#e74c3c'; // Fica vermelho se estiver perigoso
+            vidaTxt.style.color = '#e74c3c';
         }
     }
 
     function fimDeJogo() {
         jogoAtivo = false;
         clearInterval(intervaloCriacao);
-        telaJogo.innerHTML = `<div style="padding-top: 100px; font-weight: bold; color: #e74c3c; font-size: 20px;">
+        telaJogo.innerHTML = `<div style="position: relative; z-index: 10; padding-top: 100px; font-weight: bold; color: #e74c3c; font-size: 20px;">
                                 💥 FIM DE JOGO!<br>Os bixinhos destruíram a plantação.<br>Pontuação final: ${pontos}
                               </div>`;
         btnIniciar.textContent = 'Jogar Novamente';

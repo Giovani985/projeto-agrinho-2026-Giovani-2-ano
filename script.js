@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let pocoesRestantes = 3;
     let jogoAtivo = false;
     let intervaloCriacao;
+    let tempoAtaque = 2500; // Tempo inicial que a lagarta demora a comer (2.5s)
 
     btnIniciar.addEventListener('click', () => {
         if (!jogoAtivo) {
@@ -18,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica do clique na poção
     btnPocao.addEventListener('click', () => {
         if (jogoAtivo && pocoesRestantes > 0 && vidaPlantacao < 100) {
             usarPocao();
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pontos = 0;
         vidaPlantacao = 100;
         pocoesRestantes = 3;
+        tempoAtaque = 2500; // Reinicia o tempo de ataque das lagartas
         jogoAtivo = true;
         
         telaJogo.innerHTML = ''; 
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vidaTxt.style.color = 'inherit';
         
         qtdPocaoTxt.textContent = pocoesRestantes;
-        btnPocao.disabled = false; // Ativa o botão de poção
+        btnPocao.disabled = false;
         btnIniciar.textContent = 'Reiniciar Jogo';
 
         desenharPlantacao();
@@ -62,19 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
         pocoesRestantes--;
         qtdPocaoTxt.textContent = pocoesRestantes;
 
-        vidaPlantacao += 30; // Cura 30% da vida
+        vidaPlantacao += 30; 
         if (vidaPlantacao > 100) {
-            vidaPlantacao = 100; // Não deixa passar de 100%
+            vidaPlantacao = 100; 
         }
 
         vidaTxt.textContent = vidaPlantacao + '%';
         
-        // Atualiza a cor do texto de saúde se sair da zona de perigo
+        // Mecânica de Efeito Secundário: As lagartas ficam mais rápidas!
+        tempoAtaque -= 500; // Reduz 0.5 segundos no tempo de reação do jogador
+        
+        // Alerta visual rápido na tela para avisar que ficaram mais rápidas
+        const aviso = document.createElement('div');
+        aviso.style = "position: absolute; width: 100%; text-align: center; top: 10px; color: #e74c3c; font-weight: bold; z-index: 5;";
+        aviso.textContent = "⚠️ O fertilizante acelerou as lagartas!";
+        telaJogo.appendChild(aviso);
+        setTimeout(() => aviso.remove(), 1500);
+
         if (vidaPlantacao > 40) {
             vidaTxt.style.color = 'inherit';
         }
 
-        // Se acabarem as poções, desativa o botão
         if (pocoesRestantes === 0) {
             btnPocao.disabled = true;
         }
@@ -102,12 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         telaJogo.appendChild(inseto);
 
+        // Utiliza a variável dinâmica 'tempoAtaque'
         setTimeout(() => {
             if (inseto.parentNode === telaJogo && jogoAtivo) {
                 inseto.remove();
                 danificarPlantacao();
             }
-        }, 2500);
+        }, tempoAtaque);
     }
 
     function danificarPlantacao() {
@@ -126,9 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function fimDeJogo() {
         jogoAtivo = false;
         clearInterval(intervaloCriacao);
-        btnPocao.disabled = true; // Desativa a poção ao perder
+        btnPocao.disabled = true; 
         telaJogo.innerHTML = `<div style="position: relative; z-index: 10; padding-top: 100px; font-weight: bold; color: #e74c3c; font-size: 20px;">
-                                💥 FIM DE JOGO!<br>Os bixinhos destruíram a plantação.<br>Pontuação final: ${pontos}
+                                💥 FIM DE JOGO!<br>As lagartas destruíram a plantação.<br>Pontuação final: ${pontos}
                               </div>`;
         btnIniciar.textContent = 'Jogar Novamente';
     }

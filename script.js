@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const btnIniciar = document.getElementById('btn-iniciar');
+    const btnPocao = document.getElementById('btn-pocao');
+    const qtdPocaoTxt = document.getElementById('qtd-pocao');
     const telaJogo = document.getElementById('tela-jogo');
     const placarTxt = document.getElementById('placar');
     const vidaTxt = document.getElementById('vida');
 
     let pontos = 0;
     let vidaPlantacao = 100;
+    let pocoesRestantes = 3;
     let jogoAtivo = false;
     let intervaloCriacao;
 
@@ -15,28 +18,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Lógica do clique na poção
+    btnPocao.addEventListener('click', () => {
+        if (jogoAtivo && pocoesRestantes > 0 && vidaPlantacao < 100) {
+            usarPocao();
+        }
+    });
+
     function iniciarJogo() {
         pontos = 0;
         vidaPlantacao = 100;
+        pocoesRestantes = 3;
         jogoAtivo = true;
-        telaJogo.innerHTML = ''; // Limpa a tela antiga
+        
+        telaJogo.innerHTML = ''; 
         placarTxt.textContent = pontos;
         vidaTxt.textContent = vidaPlantacao + '%';
         vidaTxt.style.color = 'inherit';
+        
+        qtdPocaoTxt.textContent = pocoesRestantes;
+        btnPocao.disabled = false; // Ativa o botão de poção
         btnIniciar.textContent = 'Reiniciar Jogo';
 
-        // Desenha a plantação de milho no fundo
         desenharPlantacao();
-
-        // Cria um novo inseto a cada 1.2 segundos
         intervaloCriacao = setInterval(criarInseto, 1200);
     }
 
     function desenharPlantacao() {
         const containerPlantas = document.createElement('div');
         containerPlantas.classList.add('plantacao-fundo');
-
-        // Calcula quantos milhos cabem na tela dinamicamente
         const totalPlantas = 42; 
 
         for (let i = 0; i < totalPlantas; i++) {
@@ -45,8 +55,29 @@ document.addEventListener('DOMContentLoaded', () => {
             planta.textContent = '🌽';
             containerPlantas.appendChild(planta);
         }
-
         telaJogo.appendChild(containerPlantas);
+    }
+
+    function usarPocao() {
+        pocoesRestantes--;
+        qtdPocaoTxt.textContent = pocoesRestantes;
+
+        vidaPlantacao += 30; // Cura 30% da vida
+        if (vidaPlantacao > 100) {
+            vidaPlantacao = 100; // Não deixa passar de 100%
+        }
+
+        vidaTxt.textContent = vidaPlantacao + '%';
+        
+        // Atualiza a cor do texto de saúde se sair da zona de perigo
+        if (vidaPlantacao > 40) {
+            vidaTxt.style.color = 'inherit';
+        }
+
+        // Se acabarem as poções, desativa o botão
+        if (pocoesRestantes === 0) {
+            btnPocao.disabled = true;
+        }
     }
 
     function criarInseto() {
@@ -54,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const inseto = document.createElement('div');
         inseto.classList.add('inseto');
-        inseto.textContent = '🐛'; // Inseto comedor de milho
+        inseto.textContent = '🐛';
 
         const larguraMax = telaJogo.clientWidth - 45;
         const alturaMax = telaJogo.clientHeight - 45;
@@ -71,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         telaJogo.appendChild(inseto);
 
-        // Tempo limite para clicar antes do milho sofrer dano
         setTimeout(() => {
             if (inseto.parentNode === telaJogo && jogoAtivo) {
                 inseto.remove();
@@ -96,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function fimDeJogo() {
         jogoAtivo = false;
         clearInterval(intervaloCriacao);
+        btnPocao.disabled = true; // Desativa a poção ao perder
         telaJogo.innerHTML = `<div style="position: relative; z-index: 10; padding-top: 100px; font-weight: bold; color: #e74c3c; font-size: 20px;">
                                 💥 FIM DE JOGO!<br>Os bixinhos destruíram a plantação.<br>Pontuação final: ${pontos}
                               </div>`;

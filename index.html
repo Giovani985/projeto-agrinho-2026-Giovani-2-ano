@@ -20,14 +20,18 @@
 
         <section class="container-jogo">
             <h3>Defenda a Plantação de Milho! 🌽</h3>
-            <p>Clique nos insetos para usar a máquina e aplicar o protetor biológico antes que eles comam as plantas!</p>
+            <p>Clique nos insetos para eliminá-los. Se a vida cair, use suas poções de fertilizante!</p>
             
             <div class="controles-jogo">
                 <button id="btn-iniciar" class="btn-primario">Iniciar Jogo</button>
                 <div class="status-jogo">
                     <span>Pontos: <strong id="placar">0</strong></span>
-                    <span>Saúde do Milharal: <strong id="vida">100%</strong></span>
+                    <span>Saúde: <strong id="vida">100%</strong></span>
                 </div>
+            </div>
+
+            <div class="painel-pocao">
+                <button id="btn-pocao" class="btn-pocao" disabled>🧪 Usar Fertilizante (<span id="qtd-pocao">3</span>)</button>
             </div>
 
             <div id="tela-jogo" class="tela-jogo"></div>

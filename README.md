@@ -1,12 +1,16 @@
 # Do Milho à Música 🌽🎶
 
-Projeto interativo desenvolvido para o **Agrinho**, focado em sustentabilidade e tecnologia.
+Projeto interativo desenvolvido para o **Agrinho**, focado em sustentabilidade, tecnologia e proteção ambiental.
 
-## 🎮 O Jogo: Defenda a Plantação
+## 🎮 O Jogo: Desafio dos 20 Segundos
 
-O objetivo é eliminar as lagartas (`🐛`) clicando nelas antes que ataquem as plantas.
+O usuário entra em um modo contra-relógio para proteger o milharal contra as lagartas (`🐛`). 
 
-### 🔧 Mecânicas Avançadas:
-* **Sistema de Cura:** O jogador possui **3 poções de fertilizante biológico** (`🧪`).
-* **Recuperação:** Cada poção recupera **30% da vida** da plantação.
-* **Efeito Colateral (Risco vs Recompensa):** Cada poção utilizada acelera o metabolismo das lagartas. Elas passam a comer o milharal **mais depressa**, diminuindo o tempo de reação do jogador!
+### 🔧 Sistema de Avaliação e Regras:
+* **Tempo Limite:** O jogador tem exatamente **20 segundos** para acumular pontos.
+* **Mecânica de Risco:** Usar o fertilizante (`🧪`) cura 30% da vida da plantação, mas acelera permanentemente as lagartas.
+* **Tabela de Notas de Encerramento:**
+  * **Nota A:** $\ge$ 100 pontos (Manejo Perfeito).
+  * **Nota B:** 75 a 95 pontos (Bom Controle).
+  * **Nota C:** 40 a 70 pontos (Controle Regular).
+  * **Nota D:** $<$ 40 pontos (Infestação Crítica).
